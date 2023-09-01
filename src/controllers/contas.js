@@ -1,4 +1,3 @@
-const bancodedados = require('../bancodedados')
 let bancoDeDados = require('../bancodedados')
 
 const listar = (req, res) => {
@@ -60,7 +59,7 @@ const atualizarUsuario = (req, res) => {
         return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
     }
 
-    let usuario = bancodedados.contas.find((conta) => conta.numero === Number(numeroConta)).usuario
+    let usuario = bancoDeDados.contas.find((conta) => conta.numero === Number(numeroConta)).usuario
 
     if (!usuario) {
         return res.status(400).json({ mensagem: "A conta não existe." })
@@ -90,7 +89,7 @@ const atualizarUsuario = (req, res) => {
 const remover = (req, res) => {
     const { numeroConta } = req.params
 
-    let conta = bancodedados.contas.find((conta) => conta.numero === Number(numeroConta))
+    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numeroConta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta não existe." })
@@ -106,9 +105,19 @@ const remover = (req, res) => {
     res.status(204).send()
 }
 
+const saldo = (req, res) => {
+    res.json({ mensagem: "Rota de saldo" })
+}
+
+const extrato = (req, res) => {
+    res.json({ mensagem: "Rota de extrato" })
+}
+
 module.exports = {
     listar,
     criar,
     atualizarUsuario,
-    remover
+    remover,
+    saldo,
+    extrato
 }
