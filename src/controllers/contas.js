@@ -87,8 +87,28 @@ const atualizarUsuario = (req, res) => {
     res.status(204).send()
 }
 
+const remover = (req, res) => {
+    const { numeroConta } = req.params
+
+    let conta = bancodedados.contas.find((conta) => conta.numero === Number(numeroConta))
+
+    if (!conta) {
+        return res.status(400).json({ mensagem: "A conta não existe." })
+    }
+
+    if (conta.saldo !== 0) {
+        return res.status(400).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" })
+    }
+
+    const indexConta = bancoDeDados.contas.indexOf(conta)
+    bancoDeDados.contas.splice(indexConta, 1)
+
+    res.status(204).send()
+}
+
 module.exports = {
     listar,
     criar,
-    atualizarUsuario
+    atualizarUsuario,
+    remover
 }
