@@ -8,5 +8,6 @@ router.get("/", (req, res) => {
 })
 
 router.get("/contas", contasController.listar)
+router.post("/contas", contasController.criar)
 
 module.exports = router
