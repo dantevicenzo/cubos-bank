@@ -1,4 +1,4 @@
-let bancoDeDados = require('../bancodedados')
+const { listarContas, obterContaPeloCpf, obterContaPeloEmail, obterContaPeloNumero, listarDepositos, listarSaques, listarTransferenciasEnviadas, listarTransferenciasRecebidas, validaSenhaBanco, adicionarConta, removerConta, obterContaDiferentePeloCpf, obterContaDiferentePeloEmail } = require('../servico')
 
 const listar = (req, res) => {
     const { senha_banco } = req.query
@@ -7,13 +7,13 @@ const listar = (req, res) => {
         return res.status(400).json({ mensagem: "Informe a senha do banco." })
     }
 
-    const senhaEhValida = senha_banco === bancoDeDados.banco.senha
+    const senhaEhValida = validaSenhaBanco(senha_banco)
 
     if (!senhaEhValida) {
         return res.status(400).json({ mensagem: "Senha incorreta." })
     }
 
-    const contasBancarias = bancoDeDados.contas
+    const contasBancarias = listarContas()
 
     return res.status(200).json(contasBancarias)
 }
@@ -25,27 +25,14 @@ const criar = (req, res) => {
         return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
     }
 
-    const cpfEhUnico = !bancoDeDados.contas.find((conta) => conta.usuario.cpf === Number(cpf))
-    const emailEhUnico = !bancoDeDados.contas.find((conta) => conta.usuario.email === email)
+    const cpfEhUnico = !obterContaPeloCpf(Number(cpf))
+    const emailEhUnico = !obterContaPeloEmail(email)
 
     if (!cpfEhUnico || !emailEhUnico) {
         return res.status(400).json({ mensagem: "Já existe uma conta com o cpf ou e-mail informado!" })
     }
 
-    const novaConta = {
-        numero: bancoDeDados.contasId++,
-        saldo: 0,
-        usuario: {
-            nome,
-            cpf,
-            data_nascimento,
-            telefone,
-            email,
-            senha
-        }
-    }
-
-    bancoDeDados.contas.push(novaConta)
+    adicionarConta(nome, cpf, data_nascimento, telefone, email, senha)
 
     res.status(204).send()
 }
@@ -58,14 +45,14 @@ const atualizarUsuario = (req, res) => {
         return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
     }
 
-    let usuario = bancoDeDados.contas.find((conta) => conta.numero === Number(numeroConta)).usuario
+    let usuario = obterContaPeloNumero(Number(numeroConta)).usuario
 
     if (!usuario) {
         return res.status(400).json({ mensagem: "A conta não existe." })
     }
 
-    const novoCpfEhUnico = !bancoDeDados.contas.find((conta) => conta.numero !== Number(numeroConta) && conta.usuario.cpf === Number(cpf))
-    const novoEmailEhUnico = !bancoDeDados.contas.find((conta) => conta.numero !== Number(numeroConta) && conta.usuario.email === email)
+    const novoCpfEhUnico = !obterContaDiferentePeloCpf(Number(cpf))
+    const novoEmailEhUnico = !obterContaDiferentePeloEmail(email)
 
     if (!novoCpfEhUnico) {
         return res.status(400).json({ mensagem: "Já existe uma conta com o cpf informado!" })
@@ -88,7 +75,7 @@ const atualizarUsuario = (req, res) => {
 const remover = (req, res) => {
     const { numeroConta } = req.params
 
-    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numeroConta))
+    let conta = obterContaPeloNumero(Number(numeroConta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta não existe." })
@@ -98,8 +85,7 @@ const remover = (req, res) => {
         return res.status(400).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" })
     }
 
-    const indexConta = bancoDeDados.contas.indexOf(conta)
-    bancoDeDados.contas.splice(indexConta, 1)
+    removerConta(conta)
 
     res.status(204).send()
 }
@@ -111,7 +97,7 @@ const saldo = (req, res) => {
         return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
     }
 
-    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = obterContaPeloNumero(Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })
@@ -133,7 +119,7 @@ const extrato = (req, res) => {
         return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
     }
 
-    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = obterContaPeloNumero(Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })
@@ -145,10 +131,10 @@ const extrato = (req, res) => {
         return res.status(400).json({ mensagem: "Senha inválida!" })
     }
 
-    const depositos = bancoDeDados.depositos.filter((deposito) => deposito.numero_conta === Number(numero_conta))
-    const saques = bancoDeDados.saques.filter((saque) => saque.numero_conta === Number(numero_conta))
-    const transferenciasEnviadas = bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_origem === Number(numero_conta))
-    const transferenciasRecebidas = bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_destino === Number(numero_conta))
+    const depositos = listarDepositos(Number(numero_conta))
+    const saques = listarSaques(Number(numero_conta))
+    const transferenciasEnviadas = listarTransferenciasEnviadas(Number(numero_conta))
+    const transferenciasRecebidas = listarTransferenciasRecebidas(Number(numero_conta))
 
     res.json({ depositos, saques, transferenciasEnviadas, transferenciasRecebidas })
 }

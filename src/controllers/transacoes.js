@@ -1,5 +1,4 @@
-const bancoDeDados = require("../bancodedados")
-const format = require("date-fns/format")
+const { obterContaPeloNumero, registrarDeposito, registrarSaque, registrarTransferencia } = require("../servico")
 
 const depositar = (req, res) => {
     const { numero_conta, valor } = req.body
@@ -12,7 +11,7 @@ const depositar = (req, res) => {
         return res.status(400).json({ mensagem: "Não é permitido fazer depósitos com valores negativos ou zerados." })
     }
 
-    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = obterContaPeloNumero(Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })
@@ -20,13 +19,7 @@ const depositar = (req, res) => {
 
     conta.saldo += Number(valor)
 
-    const data = format(new Date(), "yyyy-MM-dd HH:mm:ss")
-
-    bancoDeDados.depositos.push({
-        data,
-        numero_conta,
-        valor
-    })
+    registrarDeposito(numero_conta, valor)
 
     return res.status(204).send()
 }
@@ -46,7 +39,7 @@ const sacar = (req, res) => {
         return res.status(400).json({ mensagem: "Não é permitido fazer saques com valores negativos ou zerados." })
     }
 
-    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = obterContaPeloNumero(Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })
@@ -66,13 +59,7 @@ const sacar = (req, res) => {
 
     conta.saldo -= Number(valor)
 
-    const data = format(new Date(), "yyyy-MM-dd HH:mm:ss")
-
-    bancoDeDados.saques.push({
-        data,
-        numero_conta,
-        valor
-    })
+    registrarSaque(numero_conta, valor)
 
     return res.status(204).send()
 }
@@ -92,8 +79,8 @@ const transferir = (req, res) => {
         return res.status(400).json({ mensagem: "Não é permitido fazer transferência com valores negativos ou zerados." })
     }
 
-    let contaOrigem = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta_origem))
-    let contaDestino = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta_destino))
+    let contaOrigem = obterContaPeloNumero(Number(numero_conta_origem))
+    let contaDestino = obterContaPeloNumero(Number(numero_conta_destino))
 
     if (!contaOrigem) {
         return res.status(400).json({ mensagem: "A conta de origem informada não existe!" })
@@ -118,14 +105,7 @@ const transferir = (req, res) => {
     contaOrigem.saldo -= Number(valor)
     contaDestino.saldo += Number(valor)
 
-    const data = format(new Date(), "yyyy-MM-dd HH:mm:ss")
-
-    bancoDeDados.transferencias.push({
-        data,
-        numero_conta_origem,
-        numero_conta_destino,
-        valor
-    })
+    registrarTransferencia(numero_conta_origem, numero_conta_destino, valor)
 
     return res.status(204).send()
 }
