@@ -1,4 +1,4 @@
-let bancoDeDados = require('../bancodedados')
+let bancoDeDados = require('./bancodedados')
 const { formataData } = require('./formatter')
 
 const listarContas = () => {

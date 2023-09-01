@@ -3,10 +3,6 @@ const { listarContas, obterContaPeloCpf, obterContaPeloEmail, obterContaPeloNume
 const listar = (req, res) => {
     const { senha_banco } = req.query
 
-    if (!senha_banco) {
-        return res.status(400).json({ mensagem: "Informe a senha do banco." })
-    }
-
     const senhaEhValida = validaSenhaBanco(senha_banco)
 
     if (!senhaEhValida) {
@@ -20,10 +16,6 @@ const listar = (req, res) => {
 
 const criar = (req, res) => {
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
-
-    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
-        return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
-    }
 
     const cpfEhUnico = !obterContaPeloCpf(Number(cpf))
     const emailEhUnico = !obterContaPeloEmail(email)
@@ -40,10 +32,6 @@ const criar = (req, res) => {
 const atualizarUsuario = (req, res) => {
     const { numeroConta } = req.params
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
-
-    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
-        return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
-    }
 
     let usuario = obterContaPeloNumero(Number(numeroConta)).usuario
 
@@ -93,10 +81,6 @@ const remover = (req, res) => {
 const saldo = (req, res) => {
     const { numero_conta, senha } = req.query
 
-    if (numero_conta === undefined || !senha) {
-        return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
-    }
-
     let conta = obterContaPeloNumero(Number(numero_conta))
 
     if (!conta) {
@@ -114,10 +98,6 @@ const saldo = (req, res) => {
 
 const extrato = (req, res) => {
     const { numero_conta, senha } = req.query
-
-    if (numero_conta === undefined || !senha) {
-        return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
-    }
 
     let conta = obterContaPeloNumero(Number(numero_conta))
 

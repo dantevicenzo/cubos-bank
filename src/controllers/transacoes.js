@@ -3,12 +3,8 @@ const { obterContaPeloNumero, registrarDeposito, registrarSaque, registrarTransf
 const depositar = (req, res) => {
     const { numero_conta, valor } = req.body
 
-    if (numero_conta === undefined || valor === undefined) {
-        return res.status(400).json({ mensagem: "O número da conta e o valor são obrigatórios!" })
-    }
-
     if (Number(valor) <= 0) {
-        return res.status(400).json({ mensagem: "Não é permitido fazer depósitos com valores negativos ou zerados." })
+        return res.status(400).json({ mensagem: "Não é permitido fazer depósito com valores negativos ou zerados." })
     }
 
     let conta = obterContaPeloNumero(Number(numero_conta))
@@ -27,16 +23,8 @@ const depositar = (req, res) => {
 const sacar = (req, res) => {
     const { numero_conta, valor, senha } = req.body
 
-    if (numero_conta === undefined || valor === undefined) {
-        return res.status(400).json({ mensagem: "O número da conta e o valor são obrigatórios!" })
-    }
-
-    if (!senha) {
-        return res.status(400).json({ mensagem: "Informe a senha da conta!" })
-    }
-
     if (Number(valor) <= 0) {
-        return res.status(400).json({ mensagem: "Não é permitido fazer saques com valores negativos ou zerados." })
+        return res.status(400).json({ mensagem: "Não é permitido fazer saque com valores negativos ou zerados." })
     }
 
     let conta = obterContaPeloNumero(Number(numero_conta))
@@ -66,14 +54,6 @@ const sacar = (req, res) => {
 
 const transferir = (req, res) => {
     const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body
-
-    if (numero_conta_origem === undefined || numero_conta_destino === undefined || valor === undefined) {
-        return res.status(400).json({ mensagem: "É obrigatório informar o número da conta de origem, número da conta de destino e o valor!" })
-    }
-
-    if (!senha) {
-        return res.status(400).json({ mensagem: "Informe a senha da conta de origem!" })
-    }
 
     if (Number(valor) <= 0) {
         return res.status(400).json({ mensagem: "Não é permitido fazer transferência com valores negativos ou zerados." })
