@@ -1,3 +1,4 @@
+const bancodedados = require('../bancodedados')
 let bancoDeDados = require('../bancodedados')
 
 const listar = (req, res) => {
@@ -51,7 +52,43 @@ const criar = (req, res) => {
     res.status(204).send()
 }
 
+const atualizarUsuario = (req, res) => {
+    const { numeroConta } = req.params
+    const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
+
+    if (!nome || !cpf || !data_nascimento || !telefone || !email || !senha) {
+        return res.status(400).json({ mensagem: "Todos os campos devem ser informados." })
+    }
+
+    let usuario = bancodedados.contas.find((conta) => conta.numero === Number(numeroConta)).usuario
+
+    if (!usuario) {
+        return res.status(400).json({ mensagem: "A conta não existe." })
+    }
+
+    const novoCpfEhUnico = !bancoDeDados.contas.find((conta) => conta.numero !== Number(numeroConta) && conta.usuario.cpf === Number(cpf))
+    const novoEmailEhUnico = !bancoDeDados.contas.find((conta) => conta.numero !== Number(numeroConta) && conta.usuario.email === email)
+
+    if (!novoCpfEhUnico) {
+        return res.status(400).json({ mensagem: "Já existe uma conta com o cpf informado!" })
+    }
+
+    if (!novoEmailEhUnico) {
+        return res.status(400).json({ mensagem: "Já existe uma conta com o e-mail informado!" })
+    }
+
+    usuario.nome = nome
+    usuario.cpf = cpf
+    usuario.data_nascimento = data_nascimento
+    usuario.telefone = telefone
+    usuario.email = email
+    usuario.senha = senha
+
+    res.status(204).send()
+}
+
 module.exports = {
     listar,
-    criar
+    criar,
+    atualizarUsuario
 }

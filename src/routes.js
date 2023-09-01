@@ -9,5 +9,6 @@ router.get("/", (req, res) => {
 
 router.get("/contas", contasController.listar)
 router.post("/contas", contasController.criar)
+router.put("/contas/:numeroConta/usuario", contasController.atualizarUsuario)
 
 module.exports = router
