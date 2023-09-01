@@ -68,13 +68,13 @@ const removerConta = (conta) => {
 }
 
 const registrarDeposito = (numeroConta, valor) => {
-    const data = formataData(new Date())
-    bancoDeDados.depositos.push({ data, numeroConta, valor })
+    let conta = obterContaPeloNumero(Number(numero_conta))
+    conta.saldo += Number(valor)
+    bancoDeDados.depositos.push({ data: formataData(new Date()), numeroConta, valor })
 }
 
 const registrarSaque = (numeroConta, valor) => {
-    const data = formataData(new Date())
-    bancoDeDados.saques.push({ data, numeroConta, valor })
+    bancoDeDados.saques.push({ data: formataData(new Date()), numeroConta, valor })
 }
 
 const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) => {

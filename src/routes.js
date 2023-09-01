@@ -1,21 +1,21 @@
 const { Router } = require('express')
 const contasController = require('./controllers/contas')
 const transacoesController = require('./controllers/transacoes')
-const { validaCamposObrigatorios } = require('./validation')
+const { validaCampos } = require('./validation')
 const { contasShema, transacoesShema } = require('./shemas')
 
 const router = Router()
 
-router.get("/contas", validaCamposObrigatorios(contasShema.required.listar), contasController.listar)
-router.post("/contas", validaCamposObrigatorios(contasShema.required.criar), contasController.criar)
-router.put("/contas/:numeroConta/usuario", validaCamposObrigatorios(contasShema.required.atualizarUsuario), contasController.atualizarUsuario)
-router.delete("/contas/:numeroConta", contasController.remover)
+router.get("/contas", validaCampos(contasShema.listar), contasController.listar)
+router.post("/contas", validaCampos(contasShema.criar), contasController.criar)
+router.put("/contas/:numeroConta/usuario", validaCampos(contasShema.atualizarUsuario), contasController.atualizarUsuario)
+router.delete("/contas/:numeroConta", validaCampos(contasShema.remover), contasController.remover)
 
-router.post("/transacoes/depositar", validaCamposObrigatorios(transacoesShema.required.depositar), transacoesController.depositar)
-router.post("/transacoes/sacar", validaCamposObrigatorios(transacoesShema.required.sacar), transacoesController.sacar)
-router.post("/transacoes/transferir", validaCamposObrigatorios(transacoesShema.required.transferir), transacoesController.transferir)
+router.post("/transacoes/depositar", validaCampos(transacoesShema.depositar), transacoesController.depositar)
+router.post("/transacoes/sacar", validaCampos(transacoesShema.sacar), transacoesController.sacar)
+router.post("/transacoes/transferir", validaCampos(transacoesShema.transferir), transacoesController.transferir)
 
-router.get("/contas/saldo", validaCamposObrigatorios(contasShema.required.saldo), contasController.saldo)
-router.get("/contas/extrato", validaCamposObrigatorios(contasShema.required.extrato), contasController.extrato)
+router.get("/contas/saldo", validaCampos(contasShema.saldo), contasController.saldo)
+router.get("/contas/extrato", validaCampos(contasShema.extrato), contasController.extrato)
 
 module.exports = router

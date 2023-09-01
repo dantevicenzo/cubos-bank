@@ -35,10 +35,6 @@ const atualizarUsuario = (req, res) => {
 
     let usuario = obterContaPeloNumero(Number(numeroConta)).usuario
 
-    if (!usuario) {
-        return res.status(400).json({ mensagem: "A conta não existe." })
-    }
-
     const novoCpfEhUnico = !obterContaDiferentePeloCpf(Number(cpf))
     const novoEmailEhUnico = !obterContaDiferentePeloEmail(email)
 
@@ -65,10 +61,6 @@ const remover = (req, res) => {
 
     let conta = obterContaPeloNumero(Number(numeroConta))
 
-    if (!conta) {
-        return res.status(400).json({ mensagem: "A conta não existe." })
-    }
-
     if (conta.saldo !== 0) {
         return res.status(400).json({ mensagem: "A conta só pode ser removida se o saldo for zero!" })
     }
@@ -83,10 +75,6 @@ const saldo = (req, res) => {
 
     let conta = obterContaPeloNumero(Number(numero_conta))
 
-    if (!conta) {
-        return res.status(400).json({ mensagem: "A conta informada não existe!" })
-    }
-
     const senhaEhValida = conta.usuario.senha === senha
 
     if (!senhaEhValida) {
@@ -100,10 +88,6 @@ const extrato = (req, res) => {
     const { numero_conta, senha } = req.query
 
     let conta = obterContaPeloNumero(Number(numero_conta))
-
-    if (!conta) {
-        return res.status(400).json({ mensagem: "A conta informada não existe!" })
-    }
 
     const senhaEhValida = conta.usuario.senha === senha
 
