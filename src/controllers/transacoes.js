@@ -12,7 +12,7 @@ const depositar = (req, res) => {
         return res.status(400).json({ mensagem: "Não é permitido fazer depósitos com valores negativos ou zerados." })
     }
 
-    const conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })
@@ -46,7 +46,7 @@ const sacar = (req, res) => {
         return res.status(400).json({ mensagem: "Não é permitido fazer saques com valores negativos ou zerados." })
     }
 
-    const conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
 
     if (!conta) {
         return res.status(400).json({ mensagem: "A conta informada não existe!" })

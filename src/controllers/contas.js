@@ -106,7 +106,25 @@ const remover = (req, res) => {
 }
 
 const saldo = (req, res) => {
-    res.json({ mensagem: "Rota de saldo" })
+    const { numero_conta, senha } = req.query
+
+    if (numero_conta === undefined || !senha) {
+        return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
+    }
+
+    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+
+    if (!conta) {
+        return res.status(400).json({ mensagem: "A conta informada não existe!" })
+    }
+
+    const senhaEhValida = conta.usuario.senha === senha
+
+    if (!senhaEhValida) {
+        return res.status(400).json({ mensagem: "Senha inválida!" })
+    }
+
+    res.status(200).json({ saldo: conta.saldo })
 }
 
 const extrato = (req, res) => {
