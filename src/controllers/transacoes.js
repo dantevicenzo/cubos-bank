@@ -109,8 +109,6 @@ const transferir = (req, res) => {
         return res.status(400).json({ mensagem: "Senha inválida!" })
     }
 
-    console.log(contaOrigem)
-
     const saldoEhSuficiente = contaOrigem.saldo >= Number(valor)
 
     if (!saldoEhSuficiente) {

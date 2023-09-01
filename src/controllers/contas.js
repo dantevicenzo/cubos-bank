@@ -15,7 +15,6 @@ const listar = (req, res) => {
 
     const contasBancarias = bancoDeDados.contas
 
-
     return res.status(200).json(contasBancarias)
 }
 
@@ -128,7 +127,30 @@ const saldo = (req, res) => {
 }
 
 const extrato = (req, res) => {
-    res.json({ mensagem: "Rota de extrato" })
+    const { numero_conta, senha } = req.query
+
+    if (numero_conta === undefined || !senha) {
+        return res.status(400).json({ mensagem: "O número da conta e senha são obrigatórios!" })
+    }
+
+    let conta = bancoDeDados.contas.find((conta) => conta.numero === Number(numero_conta))
+
+    if (!conta) {
+        return res.status(400).json({ mensagem: "A conta informada não existe!" })
+    }
+
+    const senhaEhValida = conta.usuario.senha === senha
+
+    if (!senhaEhValida) {
+        return res.status(400).json({ mensagem: "Senha inválida!" })
+    }
+
+    const depositos = bancoDeDados.depositos.filter((deposito) => deposito.numero_conta === Number(numero_conta))
+    const saques = bancoDeDados.saques.filter((saque) => saque.numero_conta === Number(numero_conta))
+    const transferenciasEnviadas = bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_origem === Number(numero_conta))
+    const transferenciasRecebidas = bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_destino === Number(numero_conta))
+
+    res.json({ depositos, saques, transferenciasEnviadas, transferenciasRecebidas })
 }
 
 module.exports = {
