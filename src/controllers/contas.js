@@ -1,4 +1,4 @@
-const { listarContas, obterContaPeloNumero, listarDepositos, listarSaques, listarTransferenciasEnviadas, listarTransferenciasRecebidas, adicionarConta, removerConta } = require('../servico')
+const { listarContas, obterContaPeloNumero, adicionarConta, removerConta, obterSaldoPeloNumeroConta, obterExtratoPeloNumeroConta, atualizarDadosUsuario } = require('../servico')
 
 const listar = (req, res) => {
     const contasBancarias = listarContas()
@@ -18,14 +18,7 @@ const atualizarUsuario = (req, res) => {
     const { numeroConta } = req.params
     const { nome, cpf, data_nascimento, telefone, email, senha } = req.body
 
-    let usuario = obterContaPeloNumero(Number(numeroConta)).usuario
-
-    usuario.nome = nome
-    usuario.cpf = cpf
-    usuario.data_nascimento = data_nascimento
-    usuario.telefone = telefone
-    usuario.email = email
-    usuario.senha = senha
+    atualizarDadosUsuario(Number(numeroConta), nome, cpf, data_nascimento, telefone, email, senha)
 
     res.status(204).send()
 }
@@ -33,9 +26,7 @@ const atualizarUsuario = (req, res) => {
 const remover = (req, res) => {
     const { numeroConta } = req.params
 
-    let conta = obterContaPeloNumero(Number(numeroConta))
-
-    removerConta(conta)
+    removerConta(numeroConta)
 
     res.status(204).send()
 }
@@ -43,20 +34,17 @@ const remover = (req, res) => {
 const saldo = (req, res) => {
     const { numero_conta } = req.query
 
-    let conta = obterContaPeloNumero(Number(numero_conta))
+    let saldo = obterSaldoPeloNumeroConta(Number(numero_conta))
 
-    res.status(200).json({ saldo: conta.saldo })
+    res.status(200).json({ saldo })
 }
 
 const extrato = (req, res) => {
     const { numero_conta } = req.query
 
-    const depositos = listarDepositos(Number(numero_conta))
-    const saques = listarSaques(Number(numero_conta))
-    const transferenciasEnviadas = listarTransferenciasEnviadas(Number(numero_conta))
-    const transferenciasRecebidas = listarTransferenciasRecebidas(Number(numero_conta))
+    const extrato = obterExtratoPeloNumeroConta(Number(numero_conta))
 
-    res.json({ depositos, saques, transferenciasEnviadas, transferenciasRecebidas })
+    res.json(extrato)
 }
 
 module.exports = {

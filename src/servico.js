@@ -25,6 +25,21 @@ const obterContaPeloNumero = (numeroConta) => {
     return bancoDeDados.contas.find((conta) => conta.numero === numeroConta)
 }
 
+const obterSaldoPeloNumeroConta = (numeroConta) => {
+    return bancoDeDados.contas.find((conta) => conta.numero === numeroConta).saldo
+}
+
+const obterExtratoPeloNumeroConta = (numeroConta) => {
+    const depositos = listarDepositos(numeroConta)
+    const saques = listarSaques(numeroConta)
+    const transferenciasEnviadas = listarTransferenciasEnviadas(numeroConta)
+    const transferenciasRecebidas = listarTransferenciasRecebidas(numeroConta)
+
+    const extrato = { depositos, saques, transferenciasEnviadas, transferenciasRecebidas }
+
+    return extrato
+}
+
 const listarDepositos = (numeroConta) => {
     return bancoDeDados.depositos.filter((deposito) => deposito.numero_conta === numeroConta)
 }
@@ -67,7 +82,19 @@ const adicionarConta = (nome, cpf, dataNascimento, telefone, email, senha) => {
     bancoDeDados.contas.push(conta)
 }
 
-const removerConta = (conta) => {
+const atualizarDadosUsuario = (numeroConta, nome, cpf, data_nascimento, telefone, email, senha) => {
+    let usuario = obterContaPeloNumero(numeroConta).usuario
+
+    usuario.nome = nome
+    usuario.cpf = cpf
+    usuario.data_nascimento = data_nascimento
+    usuario.telefone = telefone
+    usuario.email = email
+    usuario.senha = senha
+}
+
+const removerConta = (numeroConta) => {
+    const conta = obterContaPeloNumero(numeroConta)
     const indexConta = bancoDeDados.contas.indexOf(conta)
     bancoDeDados.contas.splice(indexConta, 1)
 }
@@ -94,6 +121,8 @@ module.exports = {
     obterContaPeloNumero,
     obterContaDiferentePeloCpf,
     obterContaDiferentePeloEmail,
+    obterSaldoPeloNumeroConta,
+    obterExtratoPeloNumeroConta,
     listarDepositos,
     listarSaques,
     listarTransferenciasEnviadas,
@@ -101,6 +130,7 @@ module.exports = {
     validaSenhaBanco,
     validaSenhaUsuario,
     adicionarConta,
+    atualizarDadosUsuario,
     removerConta,
     registrarDeposito,
     registrarSaque,
