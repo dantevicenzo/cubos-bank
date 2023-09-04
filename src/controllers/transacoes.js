@@ -13,18 +13,6 @@ const sacar = (req, res) => {
 
     let conta = obterContaPeloNumero(Number(numero_conta))
 
-    const senhaEhValida = conta.usuario.senha === senha
-
-    if (!senhaEhValida) {
-        return res.status(400).json({ mensagem: "Senha inválida!" })
-    }
-
-    const saldoEhSuficiente = conta.saldo >= Number(valor)
-
-    if (!saldoEhSuficiente) {
-        return res.status(400).json({ mensagem: "Saldo insuficiente!" })
-    }
-
     conta.saldo -= Number(valor)
 
     registrarSaque(numero_conta, valor)
@@ -37,18 +25,6 @@ const transferir = (req, res) => {
 
     let contaOrigem = obterContaPeloNumero(Number(numero_conta_origem))
     let contaDestino = obterContaPeloNumero(Number(numero_conta_destino))
-
-    const senhaEhValida = contaOrigem.usuario.senha === senha
-
-    if (!senhaEhValida) {
-        return res.status(400).json({ mensagem: "Senha inválida!" })
-    }
-
-    const saldoEhSuficiente = contaOrigem.saldo >= Number(valor)
-
-    if (!saldoEhSuficiente) {
-        return res.status(400).json({ mensagem: "Saldo insuficiente!" })
-    }
 
     contaOrigem.saldo -= Number(valor)
     contaDestino.saldo += Number(valor)

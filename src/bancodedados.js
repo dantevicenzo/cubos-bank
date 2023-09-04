@@ -33,7 +33,7 @@ module.exports = {
         },
         {
             "numero": 3,
-            "saldo": 50070,
+            "saldo": 0,
             "usuario": {
                 "nome": "Carlos Pereira",
                 "cpf": "56789012345",

@@ -1,27 +1,32 @@
 const contasShema = {
     listar: {
-        senhaBanco: { query: ["senha_banco"] },
+        senhaBanco: { query: "senha_banco" },
         obrigatorio: { query: ["senha_banco"] }
     },
     criar: {
-        obrigatorio: { body: ["nome", "cpf", "data_nascimento", "telefone", "email", "senha"] }
+        obrigatorio: { body: ["nome", "cpf", "data_nascimento", "telefone", "email", "senha"] },
+        cpfUnico: { body: "cpf" },
+        emailUnico: { body: "email" }
     },
     atualizarUsuario: {
         obrigatorio: { body: ["nome", "cpf", "data_nascimento", "telefone", "email", "senha"] },
-        contaExiste: { params: ["numeroConta"] }
+        contaExiste: { params: ["numeroConta"] },
+        cpfDiferenteUnico: { cpf: { source: "body", key: "cpf" }, numeroConta: { source: "params", key: "numeroConta" } },
+        emailDiferenteUnico: { email: { source: "body", key: "email" }, numeroConta: { source: "params", key: "numeroConta" } }
     },
     saldo: {
-        senhaUsuario: { query: ["numero_conta", "senha"] },
+        senhaUsuario: { senha: { source: "query", key: "senha" }, numeroConta: { source: "query", key: "numero_conta" } },
         obrigatorio: { query: ["numero_conta", "senha"] },
         contaExiste: { query: ["numero_conta"] }
     },
     extrato: {
-        senhaUsuario: { query: ["numero_conta", "senha"] },
+        senhaUsuario: { senha: { source: "query", key: "senha" }, numeroConta: { source: "query", key: "numero_conta" } },
         obrigatorio: { query: ["numero_conta", "senha"] },
         contaExiste: { query: ["numero_conta"] }
     },
     remover: {
-        contaExiste: { params: ["numeroConta"] }
+        contaExiste: { params: ["numeroConta"] },
+        saldoZero: { params: "numeroConta" }
     }
 }
 
@@ -34,12 +39,16 @@ const transacoesShema = {
     sacar: {
         obrigatorio: { body: ["numero_conta", "valor", "senha"] },
         valorMaiorQueZero: { body: "valor", operacao: "saque" },
-        contaExiste: { body: ["numero_conta"] }
+        contaExiste: { body: ["numero_conta"] },
+        senhaUsuario: { senha: { source: "body", key: "senha" }, numeroConta: { source: "body", key: "numero_conta" } },
+        saldoSuficiente: { numeroConta: { source: "body", key: "numero_conta" }, valor: { source: "body", key: "valor" } }
     },
     transferir: {
         obrigatorio: { body: ["numero_conta_origem", "numero_conta_destino", "valor", "senha"] },
         valorMaiorQueZero: { body: "valor", operacao: "transferência" },
-        contaExiste: { body: ["numero_conta_origem", "numero_conta_destino"] }
+        contaExiste: { body: ["numero_conta_origem", "numero_conta_destino"] },
+        senhaUsuario: { senha: { source: "body", key: "senha" }, numeroConta: { source: "body", key: "numero_conta_origem" } },
+        saldoSuficiente: { numeroConta: { source: "body", key: "numero_conta_origem" }, valor: { source: "body", key: "valor" } }
     }
 }
 
