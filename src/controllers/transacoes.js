@@ -1,4 +1,4 @@
-const { obterContaPeloNumero, registrarDeposito, registrarSaque, registrarTransferencia } = require("../servico")
+const { registrarDeposito, registrarSaque, registrarTransferencia } = require("../servico")
 
 const depositar = (req, res) => {
     const { numero_conta, valor } = req.body

@@ -1,4 +1,4 @@
-const { listarContas, obterContaPeloNumero, adicionarConta, removerConta, obterSaldoPeloNumeroConta, obterExtratoPeloNumeroConta, atualizarDadosUsuario } = require('../servico')
+const { listarContas, adicionarConta, removerConta, obterSaldoPeloNumeroConta, obterExtratoPeloNumeroConta, atualizarDadosUsuario } = require('../servico')
 
 const listar = (req, res) => {
     const contasBancarias = listarContas()
