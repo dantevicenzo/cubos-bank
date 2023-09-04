@@ -106,11 +106,22 @@ const registrarDeposito = (numeroConta, valor) => {
 }
 
 const registrarSaque = (numeroConta, valor) => {
+    let conta = obterContaPeloNumero(numeroConta)
+
+    conta.saldo -= Number(valor)
+
     bancoDeDados.saques.push({ data: formataData(new Date()), numeroConta, valor })
 }
 
 const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) => {
+    let contaOrigem = obterContaPeloNumero(numeroContaOrigem)
+    let contaDestino = obterContaPeloNumero(numeroContaDestino)
+
+    contaOrigem.saldo -= Number(valor)
+    contaDestino.saldo += Number(valor)
+
     const data = formataData(new Date())
+
     bancoDeDados.transferencias.push({ data, numeroContaOrigem, numeroContaDestino, valor })
 }
 

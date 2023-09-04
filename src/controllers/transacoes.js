@@ -11,10 +11,6 @@ const depositar = (req, res) => {
 const sacar = (req, res) => {
     const { numero_conta, valor, senha } = req.body
 
-    let conta = obterContaPeloNumero(Number(numero_conta))
-
-    conta.saldo -= Number(valor)
-
     registrarSaque(numero_conta, valor)
 
     return res.status(204).send()
@@ -22,12 +18,6 @@ const sacar = (req, res) => {
 
 const transferir = (req, res) => {
     const { numero_conta_origem, numero_conta_destino, valor, senha } = req.body
-
-    let contaOrigem = obterContaPeloNumero(Number(numero_conta_origem))
-    let contaDestino = obterContaPeloNumero(Number(numero_conta_destino))
-
-    contaOrigem.saldo -= Number(valor)
-    contaDestino.saldo += Number(valor)
 
     registrarTransferencia(numero_conta_origem, numero_conta_destino, valor)
 
