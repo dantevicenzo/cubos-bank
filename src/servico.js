@@ -5,6 +5,31 @@ const listarContas = () => {
     return bancoDeDados.contas
 }
 
+const listarDepositos = (numeroConta) => {
+    return bancoDeDados.depositos.filter((deposito) => deposito.numero_conta === numeroConta)
+}
+
+const listarSaques = (numeroConta) => {
+    return bancoDeDados.saques.filter((saque) => saque.numero_conta === numeroConta)
+}
+
+const listarTransferenciasEnviadas = (numeroContaOrigem) => {
+    return bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_origem === numeroContaOrigem)
+}
+
+const listarTransferenciasRecebidas = (numeroContaDestino) => {
+    return bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_destino === numeroContaDestino)
+}
+
+const obterSenhaBanco = () => {
+    return bancoDeDados.banco.senha
+}
+
+const obterSenhaUsuarioPeloNumeroConta = (numeroConta) => {
+    let conta = obterContaPeloNumero(Number(numeroConta))
+    return conta?.usuario.senha
+}
+
 const obterContaPeloCpf = (cpf) => {
     return bancoDeDados.contas.find((conta) => conta.usuario.cpf === cpf)
 }
@@ -38,31 +63,6 @@ const obterExtratoPeloNumeroConta = (numeroConta) => {
     const extrato = { depositos, saques, transferenciasEnviadas, transferenciasRecebidas }
 
     return extrato
-}
-
-const listarDepositos = (numeroConta) => {
-    return bancoDeDados.depositos.filter((deposito) => deposito.numero_conta === numeroConta)
-}
-
-const listarSaques = (numeroConta) => {
-    return bancoDeDados.saques.filter((saque) => saque.numero_conta === numeroConta)
-}
-
-const listarTransferenciasEnviadas = (numeroContaOrigem) => {
-    return bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_origem === numeroContaOrigem)
-}
-
-const listarTransferenciasRecebidas = (numeroContaDestino) => {
-    return bancoDeDados.transferencias.filter((transferencia) => transferencia.numero_conta_destino === numeroContaDestino)
-}
-
-const validaSenhaBanco = (senha) => {
-    return senha === bancoDeDados.banco.senha
-}
-
-const validaSenhaUsuario = (numeroConta, senha) => {
-    let conta = obterContaPeloNumero(Number(numeroConta))
-    return senha === conta?.usuario.senha
 }
 
 const adicionarConta = (nome, cpf, dataNascimento, telefone, email, senha) => {
@@ -100,7 +100,7 @@ const removerConta = (numeroConta) => {
 }
 
 const registrarDeposito = (numeroConta, valor) => {
-    let conta = obterContaPeloNumero(Number(numero_conta))
+    let conta = obterContaPeloNumero(Number(numeroConta))
     conta.saldo += Number(valor)
     bancoDeDados.depositos.push({ data: formataData(new Date()), numeroConta, valor })
 }
@@ -127,6 +127,10 @@ const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) =>
 
 module.exports = {
     listarContas,
+    listarDepositos,
+    listarSaques,
+    listarTransferenciasEnviadas,
+    listarTransferenciasRecebidas,
     obterContaPeloCpf,
     obterContaPeloEmail,
     obterContaPeloNumero,
@@ -134,12 +138,8 @@ module.exports = {
     obterContaDiferentePeloEmail,
     obterSaldoPeloNumeroConta,
     obterExtratoPeloNumeroConta,
-    listarDepositos,
-    listarSaques,
-    listarTransferenciasEnviadas,
-    listarTransferenciasRecebidas,
-    validaSenhaBanco,
-    validaSenhaUsuario,
+    obterSenhaBanco,
+    obterSenhaUsuarioPeloNumeroConta,
     adicionarConta,
     atualizarDadosUsuario,
     removerConta,

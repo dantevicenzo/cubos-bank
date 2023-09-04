@@ -33,19 +33,19 @@ const contasShema = {
 const transacoesShema = {
     depositar: {
         obrigatorio: { body: ["numero_conta", "valor"] },
-        valorMaiorQueZero: { body: "valor", operacao: "depósito" },
+        valorMaiorQueZero: { valor: { source: "body", key: "valor" }, operacao: "depósito" },
         contaExiste: { body: ["numero_conta"] }
     },
     sacar: {
         obrigatorio: { body: ["numero_conta", "valor", "senha"] },
-        valorMaiorQueZero: { body: "valor", operacao: "saque" },
+        valorMaiorQueZero: { valor: { source: "body", key: "valor" }, operacao: "saque" },
         contaExiste: { body: ["numero_conta"] },
         senhaUsuario: { senha: { source: "body", key: "senha" }, numeroConta: { source: "body", key: "numero_conta" } },
         saldoSuficiente: { numeroConta: { source: "body", key: "numero_conta" }, valor: { source: "body", key: "valor" } }
     },
     transferir: {
         obrigatorio: { body: ["numero_conta_origem", "numero_conta_destino", "valor", "senha"] },
-        valorMaiorQueZero: { body: "valor", operacao: "transferência" },
+        valorMaiorQueZero: { valor: { source: "body", key: "valor" }, operacao: "transferência" },
         contaExiste: { body: ["numero_conta_origem", "numero_conta_destino"] },
         senhaUsuario: { senha: { source: "body", key: "senha" }, numeroConta: { source: "body", key: "numero_conta_origem" } },
         saldoSuficiente: { numeroConta: { source: "body", key: "numero_conta_origem" }, valor: { source: "body", key: "valor" } }
