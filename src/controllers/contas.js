@@ -1,4 +1,4 @@
-const { listarContas, obterContaPeloCpf, obterContaPeloEmail, obterContaPeloNumero, listarDepositos, listarSaques, listarTransferenciasEnviadas, listarTransferenciasRecebidas, validaSenhaBanco, adicionarConta, removerConta, obterContaDiferentePeloCpf, obterContaDiferentePeloEmail } = require('../servico')
+const { listarContas, obterContaPeloNumero, listarDepositos, listarSaques, listarTransferenciasEnviadas, listarTransferenciasRecebidas, adicionarConta, removerConta } = require('../servico')
 
 const listar = (req, res) => {
     const contasBancarias = listarContas()
