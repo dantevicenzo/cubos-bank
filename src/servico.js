@@ -96,12 +96,15 @@ const atualizarDadosUsuario = (numeroConta, nome, cpf, data_nascimento, telefone
 const removerConta = (numeroConta) => {
     const conta = obterContaPeloNumero(numeroConta)
     const indexConta = bancoDeDados.contas.indexOf(conta)
+
     bancoDeDados.contas.splice(indexConta, 1)
 }
 
 const registrarDeposito = (numeroConta, valor) => {
     let conta = obterContaPeloNumero(Number(numeroConta))
+
     conta.saldo += Number(valor)
+
     bancoDeDados.depositos.push({ data: formataData(new Date()), numeroConta, valor })
 }
 
@@ -120,9 +123,7 @@ const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) =>
     contaOrigem.saldo -= Number(valor)
     contaDestino.saldo += Number(valor)
 
-    const data = formataData(new Date())
-
-    bancoDeDados.transferencias.push({ data, numeroContaOrigem, numeroContaDestino, valor })
+    bancoDeDados.transferencias.push({ data: formataData(new Date()), numeroContaOrigem, numeroContaDestino, valor })
 }
 
 module.exports = {

@@ -16,11 +16,7 @@ const validaCampos = (schema) => {
         schema.saldoSuficiente && validaSaldoSuficiente(req, schema.saldoSuficiente, erros)
         schema.saldoZero && validaSaldoZero(req, schema.saldoZero, erros)
 
-        if (erros.length > 0) {
-            return res.status(400).json(erros)
-        } else {
-            return next()
-        }
+        return erros.length > 0 ? res.status(400).json(erros) : next()
     }
 
     return valida
@@ -29,9 +25,7 @@ const validaCampos = (schema) => {
 const validaCamposObrigatorios = (req, schemaObrigatorio, erros) => {
     for (const source in schemaObrigatorio) {
         schemaObrigatorio[source].forEach((campo) => {
-            if (req[source][campo] === undefined) {
-                erros.push({ erro: "Campo obrigatório", mensagem: `É obrigatório preencher o campo: ${campo}` })
-            }
+            req[source][campo] === undefined && registrarErro("Campo obrigatório", `É obrigatório preencher o campo: ${campo}`, erros)
         })
     }
 }
@@ -41,16 +35,14 @@ const validaValorMaiorQueZero = (req, schemaValorMaiorQueZero, erros) => {
     const valorKey = schemaValorMaiorQueZero.valor.key
     const valor = Number(req[valorSource][valorKey])
 
-    if (valor <= 0) {
-        erros.push({ erro: "Valor inválido", mensagem: `Não é permitido fazer ${schemaValorMaiorQueZero.operacao} com valores negativos ou zerados` })
-    }
+    valor <= 0 && registrarErro("Valor inválido", `Não é permitido fazer ${schemaValorMaiorQueZero.operacao} com valores negativos ou zerados`, erros)
 }
 
 const validaContaExistencias = (req, schemaContaExiste, erros) => {
     for (const source in schemaContaExiste) {
         schemaContaExiste[source].forEach((campo) => {
             const numeroConta = Number(req[source][campo])
-            !obterContaPeloNumero(numeroConta) && erros.push({ erro: "Conta inexistente", mensagem: `Não existe conta número ${numeroConta}` })
+            !obterContaPeloNumero(numeroConta) && registrarErro("Conta inexistente", `Não existe conta número ${numeroConta}`, erros)
         })
     }
 }
@@ -60,7 +52,7 @@ const validaSenhaBanco = (req, schemaSenhaBanco, erros) => {
     const senha = req[source][schemaSenhaBanco[source]]
     const senhaBancoEhValida = senha === obterSenhaBanco()
 
-    !senhaBancoEhValida && erros.push({ erro: "Senha incorreta", mensagem: "A senha informada está incorreta." })
+    !senhaBancoEhValida && registrarErro("Senha incorreta", "A senha informada está incorreta.", erros)
 }
 
 const validaSenhaUsuario = (req, schemaSenhaUsuario, erros) => {
@@ -74,14 +66,14 @@ const validaSenhaUsuario = (req, schemaSenhaUsuario, erros) => {
 
     const senhaUsuarioEhValida = senha === senhaUsuario
 
-    !senhaUsuarioEhValida && erros.push({ erro: "Senha incorreta", mensagem: "A senha informada está incorreta." })
+    !senhaUsuarioEhValida && registrarErro("Senha incorreta", "A senha informada está incorreta.", erros)
 }
 
 const validaCpfUnico = (req, schemaCpfUnico, erros) => {
     const source = Object.keys(schemaCpfUnico)[0]
     const cpf = req[source][schemaCpfUnico[source]]
     const cpfEhUnico = !obterContaPeloCpf(cpf)
-    !cpfEhUnico && erros.push({ erro: "Cpf já existe", mensagem: "Já existe uma conta com o cpf informado!" })
+    !cpfEhUnico && registrarErro("Cpf já existe", "Já existe uma conta com o cpf informado!", erros)
 }
 
 const validaCpfDiferenteUnico = (req, schemaCpfDiferenteUnico, erros) => {
@@ -92,7 +84,7 @@ const validaCpfDiferenteUnico = (req, schemaCpfDiferenteUnico, erros) => {
     const numeroConta = Number(req[numeroContaSource][numeroContaKey])
     const cpf = req[cpfSource][cpfKey]
     const cpfDiferenteEhUnico = !obterContaDiferentePeloCpf(numeroConta, cpf)
-    !cpfDiferenteEhUnico && erros.push({ erro: "Cpf já existe", mensagem: "Já existe uma conta com o cpf informado!" })
+    !cpfDiferenteEhUnico && registrarErro("Cpf já existe", "Já existe uma conta com o cpf informado!", erros)
 }
 
 const validaEmailUnico = (req, schemaEmailUnico, erros) => {
@@ -100,7 +92,7 @@ const validaEmailUnico = (req, schemaEmailUnico, erros) => {
     const email = req[source][schemaEmailUnico[source]]
 
     const emailEhUnico = !obterContaPeloEmail(email)
-    !emailEhUnico && erros.push({ erro: "Email já existe", mensagem: "Já existe uma conta com o email informado!" })
+    !emailEhUnico && registrarErro("Email já existe", "Já existe uma conta com o email informado!", erros)
 }
 
 const validaEmailDiferenteUnico = (req, schemaEmailDiferenteUnico, erros) => {
@@ -113,7 +105,7 @@ const validaEmailDiferenteUnico = (req, schemaEmailDiferenteUnico, erros) => {
 
     const emailDiferenteEhUnico = !obterContaDiferentePeloEmail(numeroConta, email)
 
-    !emailDiferenteEhUnico && erros.push({ erro: "Email já existe", mensagem: "Já existe uma conta com o email informado!" })
+    !emailDiferenteEhUnico && registrarErro("Email já existe", "Já existe uma conta com o email informado!", erros)
 }
 
 const validaSaldoSuficiente = (req, schemaSaldoSuficiente, erros) => {
@@ -128,7 +120,7 @@ const validaSaldoSuficiente = (req, schemaSaldoSuficiente, erros) => {
     const conta = obterContaPeloNumero(numeroConta)
 
     const saldoEhSuficiente = conta?.saldo >= valor
-    !saldoEhSuficiente && erros.push({ erro: "Saldo insuficiente", mensagem: "Saldo insuficiente!" })
+    !saldoEhSuficiente && registrarErro("Saldo insuficiente", "Saldo insuficiente!", erros)
 }
 
 const validaSaldoZero = (req, schemaSaldoZero, erros) => {
@@ -139,7 +131,11 @@ const validaSaldoZero = (req, schemaSaldoZero, erros) => {
     let conta = obterContaPeloNumero(numeroConta)
 
     const saldoEhZero = conta?.saldo === 0
-    !saldoEhZero && erros.push({ erro: "Saldo diferente de zero", mensagem: "A conta só pode ser removida se o saldo for zero!" })
+    !saldoEhZero && registrarErro("Saldo diferente de zero", "A conta só pode ser removida se o saldo for zero!", erros)
+}
+
+const registrarErro = (tipo, mensagem, listaErros) => {
+    listaErros.push({ erro: tipo, mensagem })
 }
 
 module.exports = { validaCampos }

@@ -34,7 +34,7 @@ const remover = (req, res) => {
 const saldo = (req, res) => {
     const { numero_conta } = req.query
 
-    let saldo = obterSaldoPeloNumeroConta(Number(numero_conta))
+    const saldo = obterSaldoPeloNumeroConta(Number(numero_conta))
 
     res.status(200).json({ saldo })
 }
