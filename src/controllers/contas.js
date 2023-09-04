@@ -1,14 +1,6 @@
 const { listarContas, obterContaPeloCpf, obterContaPeloEmail, obterContaPeloNumero, listarDepositos, listarSaques, listarTransferenciasEnviadas, listarTransferenciasRecebidas, validaSenhaBanco, adicionarConta, removerConta, obterContaDiferentePeloCpf, obterContaDiferentePeloEmail } = require('../servico')
 
 const listar = (req, res) => {
-    const { senha_banco } = req.query
-
-    const senhaEhValida = validaSenhaBanco(senha_banco)
-
-    if (!senhaEhValida) {
-        return res.status(400).json({ mensagem: "Senha incorreta." })
-    }
-
     const contasBancarias = listarContas()
 
     return res.status(200).json(contasBancarias)
@@ -71,29 +63,15 @@ const remover = (req, res) => {
 }
 
 const saldo = (req, res) => {
-    const { numero_conta, senha } = req.query
+    const { numero_conta } = req.query
 
     let conta = obterContaPeloNumero(Number(numero_conta))
-
-    const senhaEhValida = conta.usuario.senha === senha
-
-    if (!senhaEhValida) {
-        return res.status(400).json({ mensagem: "Senha inválida!" })
-    }
 
     res.status(200).json({ saldo: conta.saldo })
 }
 
 const extrato = (req, res) => {
-    const { numero_conta, senha } = req.query
-
-    let conta = obterContaPeloNumero(Number(numero_conta))
-
-    const senhaEhValida = conta.usuario.senha === senha
-
-    if (!senhaEhValida) {
-        return res.status(400).json({ mensagem: "Senha inválida!" })
-    }
+    const { numero_conta } = req.query
 
     const depositos = listarDepositos(Number(numero_conta))
     const saques = listarSaques(Number(numero_conta))

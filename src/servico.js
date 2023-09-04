@@ -45,6 +45,11 @@ const validaSenhaBanco = (senha) => {
     return senha === bancoDeDados.banco.senha
 }
 
+const validaSenhaUsuario = (numeroConta, senha) => {
+    let conta = obterContaPeloNumero(Number(numeroConta))
+    return senha === conta?.usuario.senha
+}
+
 const adicionarConta = (nome, cpf, dataNascimento, telefone, email, senha) => {
     const conta = {
         numero: bancoDeDados.contasId++,
@@ -94,6 +99,7 @@ module.exports = {
     listarTransferenciasEnviadas,
     listarTransferenciasRecebidas,
     validaSenhaBanco,
+    validaSenhaUsuario,
     adicionarConta,
     removerConta,
     registrarDeposito,

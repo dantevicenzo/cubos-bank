@@ -1,10 +1,12 @@
-const { obterContaPeloNumero } = require("./servico")
+const { obterContaPeloNumero, validaSenhaBanco, validaSenhaUsuario } = require("./servico")
 
 const validaCampos = (schema) => {
     const valida = (req, res, next) => {
         let obrigatorios = []
         let maiorQueZero = undefined
         let contaExistencias = []
+        let senhaBancoValida = true
+        let senhaUsuarioValida = true
 
         schema.obrigatorio?.body && schema.obrigatorio.body.forEach((campo) => {
             if (req.body[campo] === undefined) {
@@ -32,12 +34,24 @@ const validaCampos = (schema) => {
             !obterContaPeloNumero(Number(req.params[campo])) && contaExistencias.push(Number(req.params[campo]))
         })
 
+        if (schema.senhaBanco?.query) {
+            senhaBancoValida = validaSenhaBanco(req.query[schema.senhaBanco.query[0]])
+        }
+
+        if (schema.senhaUsuario?.query) {
+            senhaUsuarioValida = validaSenhaUsuario(req.query[schema.senhaUsuario.query[0]], req.query[schema.senhaUsuario.query[1]])
+        }
+
         if (obrigatorios.length > 0) {
             return res.status(400).json({ mensagem: `É obrigatório preencher os campos: ${obrigatorios.join(", ")}` })
         } else if (maiorQueZero) {
             return res.status(400).json({ mensagem: `Não é permitido fazer ${maiorQueZero.operacao} com valores negativos ou zerados.` })
         } else if (contaExistencias.length > 0) {
             return res.status(400).json({ mensagem: `Não existe conta número ${contaExistencias.join(" e ")}!` })
+        } else if (!senhaBancoValida) {
+            return res.status(400).json({ mensagem: "Senha do banco incorreta." })
+        } else if (!senhaUsuarioValida) {
+            return res.status(400).json({ mensagem: "Senha da conta incorreta." })
         }
         else {
             return next()

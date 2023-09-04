@@ -1,5 +1,6 @@
 const contasShema = {
     listar: {
+        senhaBanco: { query: ["senha_banco"] },
         obrigatorio: { query: ["senha_banco"] }
     },
     criar: {
@@ -10,10 +11,12 @@ const contasShema = {
         contaExiste: { params: ["numeroConta"] }
     },
     saldo: {
+        senhaUsuario: { query: ["numero_conta", "senha"] },
         obrigatorio: { query: ["numero_conta", "senha"] },
         contaExiste: { query: ["numero_conta"] }
     },
     extrato: {
+        senhaUsuario: { query: ["numero_conta", "senha"] },
         obrigatorio: { query: ["numero_conta", "senha"] },
         contaExiste: { query: ["numero_conta"] }
     },
