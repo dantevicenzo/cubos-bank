@@ -62,7 +62,7 @@ const validaSenhaUsuario = (req, schemaSenhaUsuario, erros) => {
     const senha = req[senhaSource][senhaKey]
     const senhaUsuario = obterSenhaUsuarioPeloNumeroConta(numeroConta, senha)
     const senhaUsuarioEhValida = senha === senhaUsuario
-    senhaUsuario && !senhaUsuarioEhValida && registrarErro("Senha incorreta", "A senha informada está incorreta.", erros)
+    senha && !senhaUsuarioEhValida && registrarErro("Senha incorreta", "A senha informada está incorreta.", erros)
 }
 
 const validaCpfUnico = (req, schemaCpfUnico, erros) => {
