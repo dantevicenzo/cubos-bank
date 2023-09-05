@@ -105,7 +105,7 @@ const registrarDeposito = (numeroConta, valor) => {
 
     conta.saldo += Number(valor)
 
-    bancoDeDados.depositos.push({ data: formataData(new Date()), numeroConta, valor })
+    bancoDeDados.depositos.push({ data: formataData(new Date()), numero_conta: numeroConta, valor })
 }
 
 const registrarSaque = (numeroConta, valor) => {
@@ -113,7 +113,7 @@ const registrarSaque = (numeroConta, valor) => {
 
     conta.saldo -= Number(valor)
 
-    bancoDeDados.saques.push({ data: formataData(new Date()), numeroConta, valor })
+    bancoDeDados.saques.push({ data: formataData(new Date()), numero_conta: numeroConta, valor })
 }
 
 const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) => {
@@ -123,7 +123,7 @@ const registrarTransferencia = (numeroContaOrigem, numeroContaDestino, valor) =>
     contaOrigem.saldo -= Number(valor)
     contaDestino.saldo += Number(valor)
 
-    bancoDeDados.transferencias.push({ data: formataData(new Date()), numeroContaOrigem, numeroContaDestino, valor })
+    bancoDeDados.transferencias.push({ data: formataData(new Date()), numero_conta_origem: numeroContaOrigem, numero_conta_destino: numeroContaDestino, valor })
 }
 
 module.exports = {
