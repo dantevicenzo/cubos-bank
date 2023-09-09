@@ -1,4 +1,3 @@
-# academy-template-readme-projects
 ![](https://i.imgur.com/xG74tOh.png)
 
 <p align="center">
