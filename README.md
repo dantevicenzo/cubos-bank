@@ -25,9 +25,6 @@
   
  
 </p>
-<h1 align="center">
-    <img alt="Cubos Academy" title="#CubosAcademy" src="assets/Capa GItHub.png" />
-</h1>
 
 <h4 align="center"> 
 	🚧 Cubos Bank 🚧
