@@ -1,101 +1,112 @@
+# academy-template-readme-projects
 ![](https://i.imgur.com/xG74tOh.png)
 
-# Desafio Módulo 2 - Back-end
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/dantevicenzo/cubos-bank-api?color=%2304D361">
 
-## Como entregar?
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/dantevicenzo/cubos-bank-api">
+  
+  <a href="https://github.com/dantevicenzo/cubos-bank-api/commits/main">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/dantevicenzo/cubos-bank-api">
+  </a>
+  
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
+  
+   <a href="https://cubos.academy/">
+    <img alt="Feito por Dante Vicenzo" src="https://img.shields.io/badge/feito-por%20Dante%20Vicenzo-D818A5">
+   </a>
+   
+   <a href="https://github.com/dantevicenzo/cubos-bank-api/stargazers">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/dantevicenzo/cubos-bank-api?style=social">
+  </a>
+  
+   <a href="https://www.twitter.com/dantevicenzo/">
+    <img alt="Siga no Twitter" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdantevicenzo%2Fcubos-bank-api">
+  </a>
+  
+ 
+</p>
+<h1 align="center">
+    <img alt="Cubos Academy" title="#CubosAcademy" src="assets/Capa GItHub.png" />
+</h1>
 
-- [x] Faça o fork desse repositório para o seu GitHub
-- [x] Clone o seu repositório em sua máquina
-- [x] Desenvolva seu projeto, fazendo commits a cada alteração e push
-- [x] Crie um PR (pull request)
-- [x] Envie o link do pull request que você criou na plataforma da Cubos
+<h4 align="center"> 
+	🚧 Cubos Bank 🚧
+</h4>
 
-### ⚠️ Importante: Se o pull request não for criado e enviado na plataforma o feedback não será fornecido e constará como não entregue
+<p align="center">
+	<img alt="Status Concluído" src="https://img.shields.io/badge/STATUS-CONCLU%C3%8DDO-brightgreen">
+</p>
 
-## Descrição do desafio
+<p align="center">
+ <a href="#-sobre-o-projeto">Sobre</a> •
+ <a href="#-funcionalidades">Funcionalidades</a> •
+ <a href="#-layout">Layout</a> • 
+ <a href="#-como-executar-o-projeto">Como executar</a> • 
+ <a href="#-tecnologias">Tecnologias</a> • 
+ <a href="#-contribuidores">Contribuidores</a> • 
+ <a href="#-autor">Autor</a> • 
+ <a href="#user-content--licença">Licença</a>
+</p>
 
-Você acabou de ser contratado pela melhor empresa de tecnologia do mundo: a **CUBOS**.
-Sua primeira tarefa como desenvolvedor é criar uma API para um Banco Digital. Esse será um projeto **piloto**, ou seja, no futuro outras funcionalidades serão implementadas, portanto, dados do banco (nome, agência, etc.) serão imutáveis.
 
-Seu papel é construir uma RESTful API que permita:
+## 💻 Sobre o projeto
 
--   Criar conta bancária
--   Listar contas bancárias
--   Atualizar os dados do usuário da conta bancária
--   Excluir uma conta bancária
--   Depósitar em uma conta bancária
--   Sacar de uma conta bancária
--   Transferir valores entre contas bancárias
--   Consultar saldo da conta bancária
--   Emitir extrato bancário
+📄 Cubos Bank - é uma API REST de sistema bancário.
 
-**Importante: Sempre que a validação de uma requisição falhar, responda com código de erro e mensagem adequada à situação, ok?**
 
-**Exemplo:**
+Projeto desenvolvido como desafio de código no módulo 2 da **[Turma 07]** de [ [Desenvolvimento de Software](https://cubos.academy/cursos/desenvolvimento-de-software-v2) | [On Demand](https://cubos.academy/cubosondemand) ] oferecida pela [Cubos Academy](https://cubos.academy/).
 
-```javascript
-// Quando é informado um número de conta que não existe:
-// HTTP Status 404
-{
-    "mensagem": "Conta bancária não encontada!"
-}
+---
+
+## ⚙️ Funcionalidades
+
+- [x] Criar conta bancária
+- [x] Listar contas bancárias
+- [x] Atualizar os dados do usuário da conta bancária
+- [x] Excluir uma conta bancária
+- [x] Depósitar em uma conta bancária
+- [x] Sacar de uma conta bancária
+- [x] Transferir valores entre contas bancárias
+- [x] Consultar saldo da conta bancária
+- [x] Emitir extrato bancário
+---
+
+## 🛣️ Como executar o projeto
+
+💡Este projeto consiste apenas no Backend (pasta server).
+
+### Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
+[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/). 
+Além disto é bom ter um editor para trabalhar com o código como [VSCode](https://code.visualstudio.com/)
+
+#### 🎲 Rodando o Backend (servidor)
+
+```bash
+
+# Clone este repositório
+$ git clone git@github.com:dantevicenzo/cubos-bank-api.git
+
+# Acesse a pasta do projeto no terminal/cmd
+$ cd cubos-bank-api
+
+# Instale as dependências
+$ npm install
+
+# Execute a aplicação em modo de desenvolvimento
+$ npm run dev
+
+# O servidor inciará na porta:3000 - acesse http://localhost:3000 
+
 ```
+<p align="center">
+  <a href="https://github.com/dantevicenzo/cubos-bank-api" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+</p>
 
-## Persistências dos dados
 
-Os dados serão persistidos em memória, no objeto existente dentro do arquivo `bancodedados.js`. **Todas as transações e contas bancárias deverão ser inseridas dentro deste objeto, seguindo a estrutura que já existe.**
-
-### Estrutura do objeto no arquivo `bancodedados.js`
-
-```javascript
-{
-    banco: {
-        nome: "Cubos Bank",
-        numero: "123",
-        agencia: "0001",
-        senha: "Cubos123Bank",
-    },
-    contas: [
-        // array de contas bancárias
-    ],
-    saques: [
-        // array de saques
-    ],
-    depositos: [
-        // array de depósitos
-    ],
-    transferencias: [
-        // array de transferências
-    ],
-}
-```
-## Requisitos obrigatórios
-
--   Sua API deve seguir o padrão REST
--   Seu código deve estar organizado, delimitando as responsabilidades de cada arquivo adequadamente. Ou seja, é esperado que ele tenha, no mínimo:
-    -   Um arquivo index.js
-    -   Um arquivo de rotas
-    -   Um pasta com controladores
--   Qualquer valor (dinheiro) deverá ser representado em centavos (Ex.: R$ 10,00 reais = 1000)
--   Evite códigos duplicados. Antes de copiar e colar, pense se não faz sentido esse pedaço de código estar centralizado numa função.
-
-## Status Code
-
-Abaixo, listamos os possíveis ***status code*** esperados como resposta da API.
-
-Obs.: A lista abaixo é para consulta, **não** significa que todos os ***status codes*** precisam necessariamente ser utilizados.
-
-```javascript
-// 200 (OK) = requisição bem sucedida
-// 201 (Created) = requisição bem sucedida e algo foi criado
-// 204 (No Content) = requisição bem sucedida, sem conteúdo no corpo da resposta
-// 400 (Bad Request) = o servidor não entendeu a requisição pois está com uma sintaxe/formato inválido
-// 401 (Unauthorized) = o usuário não está autenticado (logado)
-// 403 (Forbidden) = o usuário não tem permissão de acessar o recurso solicitado
-// 404 (Not Found) = o servidor não pode encontrar o recurso solicitado
-// 500 (Internal Server Error) = falhas causadas pelo servidor
-```
-
+#### 🧭 Testando as rotas
 ## Endpoints
 
 ### Listar contas bancárias
@@ -589,6 +600,62 @@ Esse endpoint deverá listar as transações realizadas de uma conta específica
 }
 ```
 
-**LEMBRE-SE**: Feito é melhor do que perfeito, mas não faça mal feito!!!
+---
 
-###### tags: `back-end` `módulo 2` `nodeJS` `API REST` `desafio`
+## 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+#### [](https://github.com/cubos-academy/academy-template-readme-projects#server-nodejs--typescript)**Server**  ([NodeJS](https://nodejs.org/en/)  +  [TypeScript](https://www.typescriptlang.org/))
+
+-   **[Express](https://expressjs.com/)**
+-   **[CORS](https://expressjs.com/en/resources/middleware/cors.html)**
+
+> Veja o arquivo  [package.json](https://github.com/cubos-academy/academy-template-readme-projects/blob/master/web/package.json)
+
+
+#### [](https://github.com/cubos-academy/academy-template-readme-projects#utilit%C3%A1rios)**Utilitários**
+
+-   Editor:  **[Visual Studio Code](https://code.visualstudio.com/)**
+-   Markdown:  **[StackEdit](https://stackedit.io/)**,  **[Markdown Emoji](https://gist.github.com/rxaviers/7360908)**
+-   Commit Conventional:  **[Commitlint](https://github.com/conventional-changelog/commitlint)**
+-   Teste de API:  **[Postman](https://www.postman.com/)**
+
+---
+
+## 👨‍💻 Contribuidores
+
+Um praise para os cúbicos que contribuíram neste projeto 👏
+
+<table>
+  <tr>
+    <td align="center"><a href="https://cubos.academy/"><img style="border-radius: 50%;" src="https://github.com/dantevicenzo.png" width="100px;" alt=""/><br /><sub><b>Dante Vicenzo</b></sub></a><br /><a href="https://dantevicenzo.com/" title="Dante Vicenzo">👨‍💻</a></td>
+  </tr>
+</table>
+
+## 💪 Como contribuir para o projeto
+
+1. Faça um **fork** do projeto.
+2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
+3. Salve as alterações e crie uma mensagem de commit contando o que você fez: `git commit -m "feature: My new feature"`
+4. Envie as suas alterações: `git push origin my-feature`
+> Caso tenha alguma dúvida confira este [guia de como contribuir no GitHub](./CONTRIBUTING.md)
+
+---
+
+## 🧙‍♂️ Autor
+
+<a href="https://www.figma.com/@caiux">
+ <img style="border-radius: 50%;" src="https://media.licdn.com/dms/image/D4D03AQEDfulqSVXZqw/profile-displayphoto-shrink_200_200/0/1674667231041?e=1688601600&v=beta&t=C-f9fp3xJDwXm1u4c6eMwpWfVIyW0eCTDAKGIyNdRJA" width="100px;" alt=""/>
+ <br />
+ <sub><b>Dante Vicenzo</b></sub></a> <a href="https://www.dantevicenzo.com" title="Dante Vicenzo">✨</a>
+ <br />
+
+---
+
+## 📝 Licença
+
+Este projeto esta sobe a licença [MIT](./LICENSE).
+
+Feito com ❤️ por Dante Vicenzo 👋🏽 [Entre em contato!](https://www.linkedin.com/in/dantevicenzo/)
+
