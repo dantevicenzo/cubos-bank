@@ -103,8 +103,10 @@ $ npm run dev
 </p>
 
 
-#### 🧭 Testando as rotas
-## Endpoints
+#### 🧭 Testando as rotas (endpoints)
+
+##### `Live server base url`: https://cubos-bank-api.onrender.com/
+##### `Development server base url`: http://localhost:3000/
 
 ### Listar contas bancárias
 
