@@ -26,7 +26,7 @@ const atualizarUsuario = (req, res) => {
 const remover = (req, res) => {
     const { numeroConta } = req.params
 
-    removerConta(numeroConta)
+    removerConta(Number(numeroConta))
 
     res.status(204).send()
 }

@@ -123,7 +123,7 @@ const validaSaldoSuficiente = (req, schemaSaldoSuficiente, erros) => {
     const valorKey = schemaSaldoSuficiente.valor.key
     const valor = Number(req[valorSource][valorKey])
     const conta = obterContaPeloNumero(numeroConta)
-    const autorizado = !erros.some((erro) => erro.erro === "Senha incorreta")
+    const autorizado = erros["401"].length === 0
     autorizado && conta && conta.saldo < valor && registrarErro(400, "Saldo insuficiente", "O valor solicitado é maior do que o saldo disponível na conta. Certifique-se de que o valor seja igual ou menor que o saldo da conta.", erros)
 }
 

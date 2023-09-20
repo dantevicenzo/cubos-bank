@@ -11,7 +11,7 @@ const depositar = (req, res) => {
 const sacar = (req, res) => {
     const { numero_conta, valor } = req.body
 
-    registrarSaque(numero_conta, valor)
+    registrarSaque(Number(numero_conta), valor)
 
     return res.status(204).send()
 }
@@ -19,7 +19,7 @@ const sacar = (req, res) => {
 const transferir = (req, res) => {
     const { numero_conta_origem, numero_conta_destino, valor } = req.body
 
-    registrarTransferencia(numero_conta_origem, numero_conta_destino, valor)
+    registrarTransferencia(Number(numero_conta_origem), Number(numero_conta_destino), valor)
 
     return res.status(204).send()
 }
